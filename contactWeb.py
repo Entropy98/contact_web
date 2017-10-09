@@ -14,7 +14,6 @@ class Web(object):
 	def addUser(self,name):
 		for recentID in self.cursor.execute("SELECT MAX(ID) FROM users"):
 			maxID=recentID[0]
-			print(recentID)
 		if(maxID==None):
 			maxID=0
 		else:
@@ -31,9 +30,14 @@ class Web(object):
 				name+=str(nameInt)
 				
 		val=(ID,name)
-		self.cursor.execute("INSERT into users VALUES (?,?)",val)
+		self.cursor.execute("INSERT INTO users VALUES (?,?)",val)
 		#create subsidiary table for new user
 		web.cursor.execute('CREATE TABLE %s(type text, name text)'%name)
+		self.conn.commit()
+
+	def addConnection(self,person,connType,name):
+		val=(connType,name)
+		self.cursor.execute("INSERT INTO %s VALUES (?,?)"%person,val)
 		self.conn.commit()
 
 	'''Method shows all values in the users table'''
@@ -59,18 +63,5 @@ class Web(object):
 web=Web()
 
 
-#main
-while(web.active):
-	#temporary UI using raw input until gui is created
-	command=input('>>>')
-	if(command=='-a person'):
-		name=input('name: ')
-		web.addUser(name)
-	if(command=='-s'):
-		web.displayUsers()
-	if(command=='-q'):
-		web.active=False
-	if(command=='-d person'):
-		name=input('name: ')
-		web.deleteUser(name)
+
 
