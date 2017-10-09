@@ -18,12 +18,14 @@ def main():
 			print('Input name of person')
 			name=input('>>> ')
 			contactWeb.web.deleteUser(name)
+			contactWebInit.data.people.pop(name,None)
 		if(command=='-d connection'):
 			print('Input name of person')
 			person=input('>>> ')
 			print('Input connection type')
 			connType=input('>>> ')
 			contactWeb.web.deleteConnection(person,connType)
+			contactWebInit.data.people[person].pop(connType,None)
 		#display objects
 		if(command=='-s users'):
 			contactWeb.web.displayUsers()
