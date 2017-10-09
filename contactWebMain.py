@@ -8,7 +8,7 @@ def main():
 		command=input('>>>')
 		#add objects
 		if(command=='-a person'):
-			contactWebHelpers.addPerson()
+			contactWebHelpers.addPerson(contactWebInit.data)
 		if(command=='-a connection'):
 			print('Input name of person')
 			person=input('>>> ')
@@ -35,6 +35,9 @@ def main():
 			contactWeb.web.displayConnections(person)
 		if(command=='-s peopleDict'):
 			print(contactWebInit.data.people)
+		#test commands
+		if(command=='-t links'):
+			contactWebHelpers.generateLinks(contactWebInit.data)
 		#quit
 		if(command=='-q'):
 			print('Bye!')

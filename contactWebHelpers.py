@@ -13,7 +13,7 @@ def addConnection(person):
 	if(answer=='y'):
 		addConnection(person)
 
-def addPerson():
+def addPerson(data):
 	name=input('name: ')
 	contactWeb.web.addUser(name)
 	contactWebInit.data.people[name]={}
@@ -22,3 +22,13 @@ def addPerson():
 	if(answer=='y'):
 		addConnection(name)
 	
+def generateLinks(data):
+	data.links={}
+	for person in contactWebInit.data.people:
+		for connection in contactWebInit.data.people[person]:
+			link=(connection,contactWebInit.data.people[person][connection])
+			if(link not in data.links):
+				data.links[link]=[person]
+			else:
+				data.links[link].append(person)
+	print(data.links)
