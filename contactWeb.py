@@ -19,15 +19,20 @@ class Web(object):
 		else:
 			maxID=int(maxID)
 		ID=maxID+1
-		for i in self.cursor.execute('''SELECT Name FROM users WHERE Name
-			IN (?)''',(name,)):
+		baseName=name
+		for i in self.cursor.execute('SELECT Name FROM users'):
 			curName=i[0]
-			if(name in curName):
-				if(len(name)==len(curName)):
-					nameInt=1
+			if(baseName in curName):
+				if(len(curName[len(baseName):])>0):
+					curNameInt=int(curName[len(baseName):])
 				else:
-					nameInt=int(curName[len(name):])
-				name+=str(nameInt)
+					curNameInt=0
+				nameInt=0
+				if(len(baseName)==len(curName)):
+					nameInt=1
+				elif(nameInt<=curNameInt):
+					nameInt=curNameInt+1
+				name=baseName+str(nameInt)
 				
 		val=(ID,name)
 		self.cursor.execute("INSERT INTO users VALUES (?,?)",val)
@@ -45,19 +50,18 @@ class Web(object):
 		for user in self.cursor.execute('SELECT * FROM users'):
 			print(user)
 
+	def displayConnections(self,person):
+		for connection in self.cursor.execute('SELECT * FROM %s'%person):
+			print(connection)
+
 	'''Method deletes a row from the users table'''
 	def deleteUser(self,name):
 		self.cursor.execute("DELETE FROM users WHERE Name=?",(name,))
-		for i in self.cursor.execute('''SELECT Name FROM users WHERE Name
-			IN (?)''',(name,)):
-			curName=i[0]
-			if(name in curName):
-				if(len(name)==len(curName)):
-					nameInt=1
-				else:
-					nameInt=int(curName[len(name):])
-				name+=str(nameInt)
 		self.cursor.execute("DROP TABLE %s"%name)
+		self.conn.commit()
+
+	def deleteConnection(self,person,connType):
+		self.cursor.execute("DELETE FROM %s WHERE type=?"%person,(connType,))
 		self.conn.commit()
 
 web=Web()
