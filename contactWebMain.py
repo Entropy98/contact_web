@@ -37,7 +37,8 @@ def main():
 			print(contactWebInit.data.people)
 		#test commands
 		if(command=='-t links'):
-			contactWebHelpers.generateLinks(contactWebInit.data)
+			for key,value in contactWebInit.data.links.items():
+				print(key,value)
 		#quit
 		if(command=='-q'):
 			print('Bye!')

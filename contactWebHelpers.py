@@ -8,6 +8,13 @@ def addConnection(person):
 	name=input('>>>')
 	contactWeb.web.addConnection(person,connType,name)
 	contactWebInit.data.people[person][connType]=name
+
+	link=(connType,contactWebInit.data.people[person][connType])
+	if(link not in contactWebInit.data.links):
+		contactWebInit.data.links[link]=set([person])
+	else:
+		contactWebInit.data.links[link]=contactWebInit.data.links[link].union(set([person]))
+
 	print('Would you like to add another connection? [Y/N]')
 	answer=input('>>> ')
 	if(answer=='y'):
@@ -21,14 +28,3 @@ def addPerson(data):
 	answer=input('>>> ')
 	if(answer=='y'):
 		addConnection(name)
-	
-def generateLinks(data):
-	data.links={}
-	for person in contactWebInit.data.people:
-		for connection in contactWebInit.data.people[person]:
-			link=(connection,contactWebInit.data.people[person][connection])
-			if(link not in data.links):
-				data.links[link]=[person]
-			else:
-				data.links[link].append(person)
-	print(data.links)
