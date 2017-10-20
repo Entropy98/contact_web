@@ -19,9 +19,7 @@ def DBtoDict(data):
 def generateLinks(data):
 	data.links={}
 	for person in data.people:
-		print(person)
 		for connection in data.people[person]:
-			print(connection)
 			link=(connection,data.people[person][connection])
 			if(link not in data.links):
 				data.links[link]=set([person])
